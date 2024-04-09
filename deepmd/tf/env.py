@@ -277,6 +277,11 @@ def get_tf_session_config() -> Any:
     Any
         session configure object
     """
+
+    if (int(os.environ.get("DEEPMD_ENABLE_DETERMINISM", 0))):
+        tf.config.experimental.enable_op_determinism()
+        os.environ['TF_DETERMINISTIC_OPS'] = '1'
+
     set_tf_default_nthreads()
     intra, inter = get_tf_default_nthreads()
     if int(os.environ.get("DP_JIT", 0)):
